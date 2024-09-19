@@ -1,0 +1,119 @@
+/* Основные стили для светлой темы */
+.app-container.day-mode {
+    background-color: #ffffff;
+    color: #000000;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    position: relative;
+  }
+  
+  .app-container.day-mode .message {
+    color: #000000;
+  }
+  
+  .app-container.day-mode #chat-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 50px;
+  }
+  
+  .app-container.day-mode #message-input {
+    background-color: transparent; /* Убираем цвет фона для поля ввода */
+    color: #000000;
+  }
+  
+  .app-container.day-mode #send-button {
+    background-color: #e0e0e0;
+    color: #000000;
+  }
+  
+  .app-container.day-mode #send-button:hover {
+    background-color: #d0d0d0;
+  }
+  
+  /* Основные стили для ночной темы */
+  .app-container.night-mode {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    position: relative;
+  }
+  
+  .app-container.night-mode .message {
+    color: #d4d4d4;
+  }
+  
+  .app-container.night-mode #chat-container {
+    background-color: transparent; /* Убираем цвет фона для поля ввода */
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 50px;
+  }
+  
+  .app-container.night-mode #message-input {
+    background-color: transparent; /* Убираем цвет фона для поля ввода */
+    color: #d4d4d4;
+  }
+  
+  .app-container.night-mode #send-button {
+    background-color: #333;
+    color: #d4d4d4;
+  }
+  
+  .app-container.night-mode #send-button:hover {
+    background-color: #444;
+  }
+  
+  /* Кнопка переключения темы */
+  .theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #e0e0e0;
+    color: #000000;
+    z-index: 1000;
+  }
+  
+  .app-container.night-mode .theme-toggle {
+    background-color: #333;
+    color: #ffffff;
+  }
+  
+  .theme-toggle:hover {
+    background-color: #d0d0d0;
+  }
+  
+  .app-container.night-mode .theme-toggle:hover {
+    background-color: #444;
+  }
+  
+  /* Стили для кнопок */
+  .theme-toggle, .toggle-messages {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    color: #aaa;
+    margin: 0 10px;
+  }
+  
+  .theme-toggle:hover, .toggle-messages:hover {
+    color: #888;
+  }
+  
+  .night-mode .theme-toggle, .night-mode .toggle-messages {
+    color: #ccc;
+  }
+  
+  .night-mode .theme-toggle:hover, .night-mode .toggle-messages:hover {
+    color: #fff;
+  }
+  

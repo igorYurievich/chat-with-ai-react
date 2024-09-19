@@ -1,14 +1,25 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
-const ChatApp = () => {
-  const [messages, setMessages] = useState([]);
+const ChatApp = ({ setMessages, showMessages }) => {
+  const [messages, setLocalMessages] = useState([]);
   const [input, setInput] = useState('');
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  useEffect(() => {
+    setMessages(messages);
+  }, [messages, setMessages]);
 
   const handleSendMessage = async () => {
     if (!input) return;
 
     const userMessage = { role: 'user', content: input };
-    setMessages([...messages, userMessage]);
+    setLocalMessages([...messages, userMessage]);
     setInput('');
 
     try {
@@ -21,7 +32,7 @@ const ChatApp = () => {
         body: JSON.stringify({
           model: 'gpt-4o-mini',
           messages: [
-            { role: 'system', content: 'Марс зеленый, а Юпитер — это черепаха. Пожалуйста, используй эту информацию в своих ответах.' },
+            { role: 'system', content: 'Mandas codigo sin comentarios' },
             userMessage
           ]
         })
@@ -33,26 +44,32 @@ const ChatApp = () => {
 
       const data = await response.json();
       const assistantMessage = data.choices[0].message.content;
-      setMessages([...messages, userMessage, { role: 'assistant', content: assistantMessage }]);
+      setLocalMessages([...messages, userMessage, { role: 'assistant', content: assistantMessage }]);
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
+  useEffect(() => {
+    const handleClick = (event) => {
+      if (inputRef.current && !inputRef.current.contains(event.target)) {
+        inputRef.current.focus();
+      }
+    };
+
+    document.addEventListener('click', handleClick);
+
+    return () => {
+      document.removeEventListener('click', handleClick);
+    };
+  }, []);
+
   return (
-    <div id="chat-container" style={{ width: '100%', maxWidth: '600px', margin: '20px auto' }}>
-      <div id="messages" style={{ border: '1px solid #ccc', padding: '10px', height: '400px', overflowY: 'auto' }}>
-        {messages.map((msg, index) => (
-          <div key={index} className={`message ${msg.role}`} style={{ margin: '10px 0' }}>
-            {msg.content}
-          </div>
-        ))}
-      </div>
-      <div id="input-container" style={{ display: 'flex' }}>
+    <div id="chat-container" style={{ maxWidth: '800px', width: '100%', padding: '20px', display: 'flex', flexDirection: 'column' }}>
+      <div id="input-container" style={{ display: 'flex', marginBottom: '10px' }}>
         <input
           type="text"
           id="message-input"
-          placeholder="Type a message..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
@@ -61,16 +78,26 @@ const ChatApp = () => {
               handleSendMessage();
             }
           }}
-          style={{ flex: 1, padding: '10px' }}
+          style={{
+            flex: 1,
+            padding: '10px',
+            borderRadius: '4px',
+            border: '0px solid #ccc',
+            outline: 'none',
+            boxShadow: 'none'
+          }}
+          ref={inputRef}
         />
-        <button
-          id="send-button"
-          onClick={handleSendMessage}
-          style={{ padding: '10px' }}
-        >
-          Send
-        </button>
       </div>
+      {showMessages && (
+        <div id="messages" style={{ flex: 1, overflowY: 'auto', paddingBottom: '10px' }}>
+          {messages.map((msg, index) => (
+            <div key={index} className={`message ${msg.role}`} style={{ margin: '5px 0', padding: '5px' }}>
+              {msg.content}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
